@@ -35,8 +35,7 @@ function PhoneApp() {
       {/* Phone frame */}
       <div
         data-theme={theme}
-        className="phone-frame relative w-full max-w-[390px] rounded-[48px] overflow-hidden"
-        style={{ height: 'min(844px, 95svh)' }}
+        className="phone-frame phone-height relative w-full max-w-[390px] rounded-[48px] overflow-hidden"
       >
         {/* Status bar */}
         <div

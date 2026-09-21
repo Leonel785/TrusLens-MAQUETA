@@ -25,6 +25,24 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.phone-height {
+  height: min(844px, 95vh);
+  height: min(844px, 95svh);
+}
+
+@media (min-width: 640px) {
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 /* ─── LIGHT MODE (día) ─── */
 [data-theme="light"] {
   --bg-page:       #f4f1f0;

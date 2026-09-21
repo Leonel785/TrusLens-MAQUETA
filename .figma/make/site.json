@@ -1,0 +1,11 @@
+{
+  "title": "TrusLens MAQUETA",
+  "description": "Detects digital fraud in emails and social media messages using AI, focusing on protecting vulnerable users, especially seniors, from scams.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

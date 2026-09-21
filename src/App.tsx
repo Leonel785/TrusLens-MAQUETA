@@ -23,7 +23,8 @@ function PhoneApp() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
+      data-theme={theme}
+      className="app-shell min-h-screen flex items-center justify-center p-4 transition-colors duration-300"
       style={{ background: 'var(--bg-page)' }}
     >
       {/* Subtle page glow */}
@@ -65,7 +66,7 @@ function PhoneApp() {
         {/* Screen */}
         <div className="relative flex flex-col" style={{ height: 'calc(100% - 32px)' }}>
           <div
-            className="flex-1 overflow-y-auto overflow-x-hidden"
+            className="app-content flex-1 overflow-y-auto overflow-x-hidden"
             style={{ paddingBottom: 80 }}
           >
             {showResult && result ? (

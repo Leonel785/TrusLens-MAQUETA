@@ -35,11 +35,34 @@ html, body {
   height: min(844px, 95svh);
 }
 
+.app-shell {
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
 @media (min-width: 640px) {
   #root {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+@media (min-width: 900px) {
+  .app-shell {
+    padding: 24px;
+  }
+
+  .phone-frame {
+    width: min(1180px, calc(100vw - 48px));
+    max-width: none;
+    height: min(860px, calc(100vh - 48px));
+    border-radius: 32px;
+  }
+
+  .app-content {
+    width: min(960px, 100%);
+    margin-inline: auto;
   }
 }
 

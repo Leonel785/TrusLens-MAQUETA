@@ -1,63 +1,75 @@
 import { useState } from 'react'
 
-interface Tip { id: number; emoji: string; title: string; description: string; examples: string[] }
-const tips: Tip[] = [
+interface Tip { emoji: string; category: string; title: string; description: string; examples: string[]; color: string }
+const TIPS: Tip[] = [
   {
-    id: 1, emoji: '🏦',
-    title: 'Los bancos NUNCA piden contraseñas',
-    description: 'Ningún banco legítimo le pedirá su contraseña, PIN, código OTP o número de tarjeta completo por mensaje de texto, correo o llamada.',
-    examples: ['"Su cuenta fue bloqueada. Ingrese su clave aquí"', '"Verifique su PIN para desbloquear la tarjeta"', '"Necesitamos su código de 6 dígitos"'],
+    emoji: '🏦', category: 'Bancos',
+    title: 'Los bancos NUNCA te piden tu clave por mensaje',
+    description: 'Ningún banco real te pedirá tu contraseña, PIN, código de seguridad ni número de tarjeta completo a través de un correo, SMS o llamada telefónica. Eso no existe. Si recibes ese tipo de mensajes, es un intento de robo.',
+    examples: ['"Ingrese su clave aquí para desbloquear su cuenta"', '"Necesitamos su PIN para confirmar su identidad"', '"Envíe su código de 6 dígitos para reactivar el servicio"'],
+    color: 'var(--danger)',
   },
   {
-    id: 2, emoji: '🎁',
-    title: 'No existen premios inesperados',
-    description: 'Si usted no participó en un concurso, no puede haber ganado. Los mensajes de "premios sorpresa" son siempre intentos de fraude.',
-    examples: ['"¡Felicitaciones! Ganó S/. 50,000"', '"Es el ganador seleccionado de Amazon"', '"Reclame su iPhone gratis ahora"'],
+    emoji: '🎁', category: 'Premios falsos',
+    title: 'Nadie regala premios inesperados',
+    description: 'Si nunca participaste en un sorteo, no puedes haber ganado. Los mensajes de "ganaste un iPhone" o "tienes un premio" son siempre una trampa. Su objetivo es que hagas clic en un enlace o que des tus datos personales.',
+    examples: ['"¡Felicitaciones! Usted ganó S/. 50,000 del sorteo de Amazon"', '"Reclame su premio gratis antes de que expire"', '"Es el ganador seleccionado de esta semana"'],
+    color: 'var(--warn)',
   },
   {
-    id: 3, emoji: '⏰',
-    title: 'La urgencia es una trampa',
-    description: 'Los estafadores crean urgencia para que actúe sin pensar. Si un mensaje le dice que tiene "24 horas", consulte a alguien de confianza antes de actuar.',
-    examples: ['"Su cuenta se cerrará en 24 horas"', '"Última oportunidad, expira hoy"', '"Responda inmediatamente para evitar multa"'],
+    emoji: '⏰', category: 'Urgencia falsa',
+    title: 'La urgencia es una trampa para que no pienses',
+    description: 'Cuando un mensaje te dice "actúa ahora", "tienes 24 horas", o "tu cuenta se cerrará hoy", lo hace para que entres en pánico y actúes sin pensar. Las empresas legítimas no trabajan así. Ante la urgencia, para y consulta a alguien.',
+    examples: ['"Su cuenta será cerrada en 24 horas si no actúa"', '"Última oportunidad, oferta expira hoy"', '"Acción requerida URGENTE: responda ya"'],
+    color: 'var(--warn)',
   },
   {
-    id: 4, emoji: '🔗',
-    title: 'Verifique los enlaces antes de clicar',
-    description: 'Los enlaces fraudulentos parecen reales pero tienen pequeñas diferencias. "banco-seguro.net" o "amaz0n.com" NO son sitios oficiales.',
-    examples: ['banco-seguro-verificar.com (falso)', 'sunat-deuda-peru.com (falso)', 'amaz0n-prizes.net (falso)'],
+    emoji: '🔗', category: 'Enlaces peligrosos',
+    title: 'Revisa bien el enlace antes de hacer clic',
+    description: 'Los estafadores crean páginas que parecen reales pero tienen pequeños cambios en la dirección web. "banco-seguro.net" o "bbva-verificacion.com" NO son páginas oficiales del banco, aunque se parezcan.',
+    examples: ['banco-seguro-verificar.com → ❌ Falso', 'sunat-deuda-peru.com → ❌ Falso', 'amaz0n-prizes.net → ❌ Falso (tiene un cero, no una o)'],
+    color: '#7c6ff0',
   },
   {
-    id: 5, emoji: '👴👵',
-    title: 'Especial para adultos mayores',
-    description: 'Los estafadores se dirigen especialmente a adultos mayores. Comparta estas señales de alerta con sus familiares y seres queridos.',
-    examples: ['Nunca entregue dinero a desconocidos "urgentemente"', 'Llame a su hijo/a antes de hacer cualquier transferencia', 'Desconfíe si alguien dice ser de RENIEC por teléfono'],
+    emoji: '👴👵', category: 'Adultos mayores',
+    title: 'Consejos especiales para adultos mayores',
+    description: 'Los estafadores se dirigen a personas mayores porque saben que pueden ser más confiadas. Nunca actúes solo ante un mensaje sospechoso: llama a tu hijo o hija, a un vecino o a alguien de confianza antes de hacer cualquier cosa.',
+    examples: ['Ante cualquier duda, llama primero a tu familiar', 'Nunca des dinero o datos a alguien que te llamó por teléfono', 'Si algo te parece raro, probablemente lo es'],
+    color: 'var(--crimson)',
   },
   {
-    id: 6, emoji: '📞',
-    title: 'Ante la duda, llame directamente',
-    description: 'Si recibe un mensaje de su banco o institución, llame usted mismo al número oficial que aparece en su tarjeta o página web oficial.',
-    examples: ['BCP: 311-9898', 'BBVA: 595-0000', 'SUNAT: 0-801-12-100'],
+    emoji: '📞', category: 'Qué hacer',
+    title: 'Ante la duda, llama tú mismo al número oficial',
+    description: 'Si recibes un mensaje de tu banco, SUNAT o cualquier institución, no llames al número que viene en el mensaje. Busca tú mismo el número oficial en la página web oficial o en tu tarjeta, y llama a ese.',
+    examples: ['BCP: (01) 311-9898', 'BBVA: (01) 595-0000', 'SUNAT: 0-801-12-100', 'Indecopi: 224-7777'],
+    color: 'var(--safe)',
   },
 ]
 
-const quiz = [
+const QUIZ = [
   {
-    q: '¿Qué debe hacer si recibe un mensaje diciendo que ganó un premio?',
-    opts: ['Hacer clic en el enlace para reclamar', 'Ignorarlo, es probablemente un fraude', 'Dar sus datos para recibir el premio'],
+    q: '¿Qué debes hacer si recibes un mensaje diciendo que ganaste un premio?',
+    opts: ['Hacer clic en el enlace para reclamar el premio', 'Ignorarlo completamente, porque es un fraude', 'Dar tus datos personales para recibirlo'],
     correct: 1,
-    exp: '¡Correcto! Los premios inesperados son siempre señal de fraude. Nunca haga clic ni proporcione datos.',
+    exp: 'Correcto. Los premios inesperados siempre son una trampa. Si no participaste en nada, no puedes haber ganado.',
   },
   {
-    q: 'Su banco le pide su contraseña por mensaje. ¿Qué hace?',
-    opts: ['Dar la contraseña, el banco lo necesita', 'Ignorar el mensaje, es un fraude', 'Dar solo los últimos 4 dígitos'],
+    q: 'Tu banco te envía un mensaje pidiendo tu contraseña. ¿Qué haces?',
+    opts: ['La das porque el banco la necesita para protegerte', 'Ignoras el mensaje porque los bancos nunca piden contraseñas', 'Das solo los últimos 4 dígitos para ser más seguro'],
     correct: 1,
-    exp: 'Los bancos NUNCA piden contraseñas por mensaje. Este es un intento de phishing.',
+    exp: 'Los bancos NUNCA piden contraseñas por mensaje, correo ni llamada. Este es un intento de phishing.',
   },
   {
-    q: 'Un mensaje le dice "actúe en 24 horas o perderá su cuenta". ¿Qué significa?',
-    opts: ['Es urgente, debo actuar ya', 'Es una táctica de presión para engañarme', 'Debo transferir dinero inmediatamente'],
+    q: 'Un mensaje dice "Actúa ahora, tu cuenta se cerrará en 24 horas". ¿Qué significa eso?',
+    opts: ['Es una emergencia real, debo actuar ya', 'Es una táctica para que actúes sin pensar, probablemente es fraude', 'Debo llamar al número del mensaje inmediatamente'],
     correct: 1,
-    exp: 'La urgencia artificial es una técnica para que actúe sin pensar. Consulte a un familiar primero.',
+    exp: 'La urgencia artificial es una técnica de manipulación clásica. Siempre consulta a alguien antes de actuar.',
+  },
+  {
+    q: '¿Cuál de estos enlaces es el oficial del Banco de Crédito del Perú?',
+    opts: ['bcp-verificacion.com', 'banco-bcp-peru.net', 'viabcp.com'],
+    correct: 2,
+    exp: 'viabcp.com es el sitio oficial del BCP. Los otros son páginas falsas creadas para robar información.',
   },
 ]
 
@@ -70,92 +82,98 @@ export default function TipsScreen() {
   const [done, setDone] = useState(false)
 
   const resetQuiz = () => { setQIdx(0); setSelected(null); setScore(0); setDone(false) }
-
-  const q = quiz[qIdx]
+  const q = QUIZ[qIdx]
 
   return (
-    <div className="px-5 pt-3 pb-4" style={{ fontFamily: 'Outfit, sans-serif' }}>
-      <div className="mb-5">
-        <p className="text-[11px] font-bold tracking-widest uppercase mb-0.5" style={{ color: 'var(--text-label)' }}>
-          Educación digital
-        </p>
-        <h1 className="text-[26px] font-bold" style={{ fontFamily: 'DM Serif Display, serif', color: 'var(--text-primary)' }}>
-          Pro<span style={{ color: 'var(--crimson)' }}>tégete</span>
+    <div className="flex flex-col gap-5">
+      <div>
+        <p className="text-[11px] font-black tracking-widest uppercase mb-0.5" style={{ color: 'var(--text-label)' }}>Educación digital</p>
+        <h1 className="text-3xl font-bold" style={{ fontFamily: 'DM Serif Display, serif', color: 'var(--text-primary)' }}>
+          Aprender a <span style={{ color: 'var(--crimson)' }}>protegerte</span>
         </h1>
-        <p className="text-sm mt-0.5" style={{ color: 'var(--text-muted)' }}>Aprende a identificar fraudes digitales</p>
+        <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>
+          Conocer cómo funcionan los fraudes es la mejor defensa. Aquí te explicamos todo en palabras sencillas.
+        </p>
       </div>
 
       {/* Tab toggle */}
       <div
-        className="flex gap-1.5 p-1 rounded-2xl mb-5"
-        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)' }}
+        className="flex gap-1.5 p-1 rounded-2xl"
+        style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)', width: 'fit-content' }}
       >
-        {(['tips', 'quiz'] as const).map(t => (
+        {[{ id: 'tips', label: '📚 Consejos por categoría' }, { id: 'quiz', label: '🧠 Quiz interactivo' }].map(t => (
           <button
-            key={t}
-            onClick={() => { setTab(t); if (t === 'quiz') resetQuiz() }}
-            className="flex-1 py-2 rounded-xl text-sm font-bold transition-all duration-200"
+            key={t.id}
+            onClick={() => { setTab(t.id as 'tips' | 'quiz'); if (t.id === 'quiz') resetQuiz() }}
+            className="px-5 py-2.5 rounded-xl text-sm font-bold transition-all duration-200"
             style={{
-              background: tab === t ? 'var(--crimson)' : 'transparent',
-              color: tab === t ? '#fff' : 'var(--text-muted)',
-              boxShadow: tab === t ? '0 2px 10px var(--crimson-glow)' : 'none',
+              background: tab === t.id ? 'var(--crimson)' : 'transparent',
+              color: tab === t.id ? 'white' : 'var(--text-muted)',
+              boxShadow: tab === t.id ? '0 2px 10px var(--crimson-glow)' : 'none',
             }}
           >
-            {t === 'tips' ? '📚 Consejos' : '🧠 Quiz'}
+            {t.label}
           </button>
         ))}
       </div>
 
       {tab === 'tips' ? (
-        <div className="flex flex-col gap-2.5">
-          {tips.map((tip, i) => {
+        /* Expandable tip cards */
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {TIPS.map((tip, i) => {
             const open = expanded === i
             return (
               <div
-                key={tip.id}
+                key={i}
                 className="rounded-2xl overflow-hidden transition-all duration-250"
                 style={{
-                  background: open ? 'var(--bg-crimson)' : 'var(--bg-elevated)',
-                  border: `1px solid ${open ? 'var(--border-crimson)' : 'var(--border-base)'}`,
+                  background: open ? 'var(--bg-elevated)' : 'var(--bg-surface)',
+                  border: `1px solid ${open ? tip.color + '30' : 'var(--border-base)'}`,
+                  boxShadow: open ? `0 4px 20px ${tip.color}12` : 'var(--shadow-sm)',
                 }}
               >
                 <button
                   onClick={() => setExpanded(open ? null : i)}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
+                  className="w-full flex items-center gap-3.5 px-5 py-4 text-left"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
-                    style={{ background: 'var(--bg-crimson-md)' }}
+                    className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                    style={{ background: `${tip.color}12` }}
                   >
                     {tip.emoji}
                   </div>
-                  <p className="flex-1 text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{tip.title}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[10px] font-black tracking-widest uppercase mb-0.5" style={{ color: tip.color }}>
+                      {tip.category}
+                    </p>
+                    <p className="text-sm font-bold leading-snug" style={{ color: 'var(--text-primary)' }}>{tip.title}</p>
+                  </div>
                   <svg
-                    width="15" height="15" viewBox="0 0 15 15" fill="none"
+                    width="16" height="16" viewBox="0 0 16 16" fill="none"
                     style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease', color: 'var(--text-label)', flexShrink: 0 }}
                   >
-                    <path d="M2.5 5.5l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M3 6l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
 
                 {open && (
-                  <div className="px-4 pb-4">
-                    <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>{tip.description}</p>
+                  <div className="px-5 pb-5 anim-fade-in">
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>{tip.description}</p>
                     <div
-                      className="rounded-xl p-3"
-                      style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-base)' }}
+                      className="rounded-xl p-4"
+                      style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)' }}
                     >
-                      <p className="text-[10px] font-black tracking-widest uppercase mb-2" style={{ color: 'var(--text-label)' }}>
-                        {tip.id === 6 ? 'Números útiles' : 'Ejemplos típicos'}
+                      <p className="text-[10px] font-black tracking-widest uppercase mb-2.5" style={{ color: 'var(--text-label)' }}>
+                        {['📞', '🏦'].includes(tip.emoji) && tip.emoji === '📞' ? 'Números oficiales útiles' : 'Frases típicas de fraude'}
                       </p>
-                      <div className="flex flex-col gap-1.5">
+                      <ul className="flex flex-col gap-2">
                         {tip.examples.map((ex, j) => (
-                          <div key={j} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5" style={{ background: 'var(--crimson)' }} />
+                          <li key={j} className="flex items-start gap-2.5">
+                            <div className="w-3 h-3 rounded-full flex-shrink-0 mt-1" style={{ background: tip.color, opacity: 0.7 }} />
                             <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{ex}</p>
-                          </div>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 )}
@@ -166,65 +184,79 @@ export default function TipsScreen() {
       ) : done ? (
         /* Quiz result */
         <div
-          className="rounded-3xl p-6 text-center"
-          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)' }}
+          className="rounded-3xl p-8 text-center max-w-md mx-auto"
+          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)', boxShadow: 'var(--shadow-lg)' }}
         >
-          <div className="text-5xl mb-3">{score === quiz.length ? '🏆' : score >= 2 ? '🎯' : '📚'}</div>
-          <h2 className="text-xl font-bold mb-1" style={{ fontFamily: 'DM Serif Display, serif', color: 'var(--text-primary)' }}>
-            {score === quiz.length ? '¡Perfecto!' : score >= 2 ? '¡Bien hecho!' : 'Sigue aprendiendo'}
+          <div className="text-6xl mb-4">{score === QUIZ.length ? '🏆' : score >= 3 ? '🎯' : score >= 2 ? '📚' : '💪'}</div>
+          <h2 className="text-2xl font-bold mb-2" style={{ fontFamily: 'DM Serif Display, serif', color: 'var(--text-primary)' }}>
+            {score === QUIZ.length ? '¡Perfecto!' : score >= 3 ? '¡Muy bien!' : score >= 2 ? '¡Bien hecho!' : 'Sigue practicando'}
           </h2>
-          <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>
-            Obtuviste {score} de {quiz.length} respuestas correctas
+          <p className="text-sm mb-2" style={{ color: 'var(--text-muted)' }}>
+            Respondiste {score} de {QUIZ.length} preguntas correctamente
           </p>
-          <div className="flex justify-center gap-2 mb-5">
-            {quiz.map((_, i) => (
-              <div key={i} className="w-8 h-2 rounded-full" style={{ background: i < score ? 'var(--safe)' : 'var(--border-base)' }} />
+          <div className="flex justify-center gap-2 my-5">
+            {QUIZ.map((_, i) => (
+              <div key={i} className="w-10 h-2.5 rounded-full" style={{ background: i < score ? 'var(--safe)' : 'var(--border-base)' }} />
             ))}
           </div>
-          <p className="text-xs leading-relaxed mb-5" style={{ color: 'var(--text-muted)' }}>
-            {score === quiz.length
-              ? 'Excelente. Comparte este conocimiento con tus seres queridos.'
-              : 'Repasa los consejos de la sección anterior para reforzar tu protección.'}
+          <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-muted)' }}>
+            {score === QUIZ.length
+              ? 'Tienes un excelente conocimiento para protegerte de los fraudes digitales. ¡Comparte este aprendizaje con tu familia!'
+              : 'Repasa los consejos de la sección anterior para reforzar tu conocimiento. Cada vez que practicas, te proteges mejor.'}
           </p>
           <button
             onClick={resetQuiz}
-            className="w-full py-3.5 rounded-2xl font-bold text-sm"
-            style={{ background: 'var(--crimson)', color: '#fff', boxShadow: '0 4px 16px var(--crimson-glow)' }}
+            className="w-full py-4 rounded-2xl font-bold text-sm transition-all active:scale-95"
+            style={{ background: 'var(--crimson)', color: 'white', boxShadow: '0 4px 16px var(--crimson-glow)' }}
           >
             Repetir quiz
           </button>
         </div>
       ) : (
         /* Quiz in progress */
-        <div>
+        <div className="max-w-lg">
+          {/* Progress */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--border-base)' }}>
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${(qIdx / quiz.length) * 100}%`, background: 'var(--crimson)' }}
-              />
+            <div className="flex gap-1.5 flex-1">
+              {QUIZ.map((_, i) => (
+                <div
+                  key={i}
+                  className="flex-1 h-2 rounded-full transition-all duration-500"
+                  style={{ background: i < qIdx ? 'var(--safe)' : i === qIdx ? 'var(--crimson)' : 'var(--border-base)' }}
+                />
+              ))}
             </div>
-            <span className="text-xs font-bold" style={{ color: 'var(--text-label)' }}>{qIdx + 1}/{quiz.length}</span>
+            <span className="text-xs font-bold flex-shrink-0" style={{ color: 'var(--text-label)' }}>
+              {qIdx + 1} / {QUIZ.length}
+            </span>
           </div>
 
+          {/* Question */}
           <div
             className="rounded-2xl p-5 mb-4"
             style={{ background: 'var(--bg-crimson)', border: '1px solid var(--border-crimson)' }}
           >
-            <p className="text-base font-bold leading-snug" style={{ color: 'var(--text-primary)' }}>{q.q}</p>
+            <p className="text-[11px] font-black tracking-widest uppercase mb-2" style={{ color: 'var(--crimson)' }}>
+              Pregunta {qIdx + 1}
+            </p>
+            <p className="text-base font-bold leading-snug" style={{ color: 'var(--text-primary)', fontFamily: 'Outfit, sans-serif' }}>
+              {q.q}
+            </p>
           </div>
 
+          {/* Options */}
           <div className="flex flex-col gap-2.5 mb-4">
             {q.opts.map((opt, i) => {
               const isSel = selected === i
-              const isCorrect = i === q.correct
+              const isCorr = i === q.correct
               let bg = 'var(--bg-elevated)'
               let border = 'var(--border-base)'
               let textColor = 'var(--text-secondary)'
+              let dotContent = String.fromCharCode(65 + i)
 
               if (selected !== null) {
-                if (isCorrect)      { bg = 'rgba(16,160,96,0.1)'; border = 'rgba(16,160,96,0.3)'; textColor = 'var(--safe)' }
-                else if (isSel)     { bg = 'rgba(220,20,60,0.1)'; border = 'rgba(220,20,60,0.3)'; textColor = 'var(--danger)' }
+                if (isCorr)  { bg = 'var(--bg-safe)';   border = 'var(--safe-border)';   textColor = 'var(--safe)';   dotContent = '✓' }
+                else if (isSel){ bg = 'var(--bg-danger)'; border = 'var(--danger-border)'; textColor = 'var(--danger)'; dotContent = '✗' }
               }
 
               return (
@@ -235,16 +267,16 @@ export default function TipsScreen() {
                     setSelected(i)
                     if (i === q.correct) setScore(s => s + 1)
                   }}
-                  className="flex items-center gap-3 rounded-xl p-4 text-left transition-all active:scale-[0.98]"
+                  className="flex items-center gap-3.5 rounded-xl p-4 text-left transition-all active:scale-[0.98]"
                   style={{ background: bg, border: `1px solid ${border}` }}
                 >
                   <div
-                    className="w-6 h-6 rounded-full border flex items-center justify-center flex-shrink-0 text-xs font-black"
-                    style={{ borderColor: border, color: textColor }}
+                    className="w-7 h-7 rounded-full border-2 flex items-center justify-center flex-shrink-0 text-xs font-black"
+                    style={{ borderColor: textColor, color: textColor }}
                   >
-                    {selected !== null && isCorrect ? '✓' : selected !== null && isSel ? '✗' : String.fromCharCode(65 + i)}
+                    {dotContent}
                   </div>
-                  <span className="text-sm font-semibold" style={{ color: textColor }}>{opt}</span>
+                  <span className="text-sm font-semibold leading-snug" style={{ color: textColor }}>{opt}</span>
                 </button>
               )
             })}
@@ -253,20 +285,23 @@ export default function TipsScreen() {
           {selected !== null && (
             <>
               <div
-                className="rounded-xl p-3.5 mb-4"
+                className="rounded-xl p-4 mb-4 anim-fade-in"
                 style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-base)' }}
               >
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{q.exp}</p>
+                <p className="text-xs font-bold mb-1" style={{ color: selected === q.correct ? 'var(--safe)' : 'var(--danger)' }}>
+                  {selected === q.correct ? '✅ ¡Correcto!' : '❌ No exactamente…'}
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{q.exp}</p>
               </div>
               <button
                 onClick={() => {
-                  if (qIdx < quiz.length - 1) { setQIdx(i => i + 1); setSelected(null) }
+                  if (qIdx < QUIZ.length - 1) { setQIdx(i => i + 1); setSelected(null) }
                   else setDone(true)
                 }}
                 className="w-full py-4 rounded-2xl font-bold text-sm transition-all active:scale-95"
-                style={{ background: 'var(--crimson)', color: '#fff', boxShadow: '0 4px 16px var(--crimson-glow)' }}
+                style={{ background: 'var(--crimson)', color: 'white', boxShadow: '0 4px 16px var(--crimson-glow)' }}
               >
-                {qIdx < quiz.length - 1 ? 'Siguiente →' : 'Ver resultado'}
+                {qIdx < QUIZ.length - 1 ? 'Siguiente pregunta →' : 'Ver mi resultado'}
               </button>
             </>
           )}
